@@ -1,7 +1,7 @@
 //角色服务层
 app.service('brandService',function($http){
 
-//抽取查询方法
+//抽取查询的方法
     this.findAll=function(){
         return $http.get('../sysrole/findSysRoleAll.do');//业务逻辑层 service
     }
