@@ -10,6 +10,7 @@ import com.dawn.util.Result;
 import com.dawn.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,12 @@ public class SysRoleController {
 	private SysPermissionService sysPermissionService;
 	@Autowired
 	private SysRolePermissionService sysRolePermissionService;
+	//测试
+    @RequestMapping("ss")
+    @ResponseBody
+    public String test(){
+      return "sss";
+    }
 
 	/**
 	 * 查询所有角色
@@ -95,10 +102,10 @@ public class SysRoleController {
 	 */
 	@RequestMapping("addSysRole")
 	@ResponseBody
-	public String addSysRole(String roleName, String available) {
-		SysRole role = new SysRole();
+	public String addSysRole(@RequestBody SysRole role) {
+		/*SysRole role = new SysRole();
 		role.setName(roleName);
-		role.setAvailable(available);
+		role.setAvailable(available);*/
 		int i = sysRoleService.addSysRole(role);
 		String msg = "";
 		if (i > 0) {
@@ -108,6 +115,15 @@ public class SysRoleController {
 		}
 		return msg;
 	}
+	/*
+	* 单查
+	* 回显
+	* */
+	@RequestMapping("findOne")
+    @ResponseBody
+	public  SysRole findOne(Integer id){
+	    return  sysRoleService.findByIdSysRole(id);
+    }
 
 	/**
 	 * 修改角色
@@ -123,10 +139,8 @@ public class SysRoleController {
 	 */
 	@RequestMapping("updateSysRole")
 	@ResponseBody
-	public String updateSysRole(Integer roleId, String roleName, String available) {
-		SysRole role = sysRoleService.findByIdSysRole(roleId);
-		role.setName(roleName);
-		role.setAvailable(available);
+	public String updateSysRole(@RequestBody SysRole role) {
+
 		int i = sysRoleService.updateSysRole(role);
 		String msg = "";
 		if (i > 0) {
