@@ -117,7 +117,7 @@ public class SysRoleController {
 	}
 	/*
 	* 单查
-	* 回显
+	* 回显数据
 	* */
 	@RequestMapping("findOne")
     @ResponseBody
