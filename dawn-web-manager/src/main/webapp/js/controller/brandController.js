@@ -15,7 +15,7 @@ app.controller('brandController',function($scope,$http,$controller,brandService)
             $scope.list = response.rows;
         });
     }
-    //添加品牌方法
+    //添加和修改品牌方法
     $scope.save = function() {
         var methodName = null;
         if($scope.entity.id!=null){
@@ -29,7 +29,8 @@ app.controller('brandController',function($scope,$http,$controller,brandService)
                     $scope.reloadList();
                 }
                 else {
-                    alert(response.message);
+                    $scope.reloadList();
+
                 }
             });
     }
@@ -49,7 +50,7 @@ app.controller('brandController',function($scope,$http,$controller,brandService)
                     $scope.reloadList();
                 }
                 else {
-                    alert(response.message);
+                    alert(response.errorMsg);
                 }
             });
     }
