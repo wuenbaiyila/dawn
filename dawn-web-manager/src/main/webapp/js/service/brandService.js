@@ -1,4 +1,4 @@
-//品牌服务层
+//角色服务层
 app.service('brandService',function($http){
 
 //抽取查询方法
