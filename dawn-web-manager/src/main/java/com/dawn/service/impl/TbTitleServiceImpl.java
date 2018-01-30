@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
+import java.util.List; 
 
 @Service
 public class TbTitleServiceImpl implements TbTitleService {
@@ -24,7 +24,7 @@ public class TbTitleServiceImpl implements TbTitleService {
 	@Autowired
 	private TbDescMapper descMapper;
 	@Autowired
-	private TbTitleCustomMapper customMapper;
+	private TbTitleCustomMapper customMapper; 
 
 	/**
 	 * 

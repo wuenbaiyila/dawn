@@ -24,7 +24,7 @@ public interface TbTitleService {
 	String selectTitleById(Long tbtitleId);
 
 	// 根据查询状态码查询待审核知识点
-	List<TbTitleCustom> getByAuditStatu(int id);
+	List<TbTitleCustom> getByAuditStatu(int id); 
 
 	// 通过，根据题目id修改审核状态码，并刷新当前页面。
 	void updateStatu(long id);
