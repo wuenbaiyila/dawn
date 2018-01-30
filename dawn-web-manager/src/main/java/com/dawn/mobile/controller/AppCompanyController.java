@@ -24,6 +24,7 @@ import java.util.List;
  * Created by 569711293 on 2018/1/25.
  */
 @Controller
+@RequestMapping("/dawnapp")
 public class AppCompanyController {
     @Autowired
     private TbCompanyService tbCompanyService;
@@ -35,8 +36,12 @@ public class AppCompanyController {
     // 公司tree
     @RequestMapping("/company/trees")
     @ResponseBody
-    public List<TreePojo> queryCompany(@RequestParam(value = "id", defaultValue = "0") long parentid) {
-     return tbCompanyService.queryCompany(parentid);
+    public DawnResult queryCompany(@RequestParam(value = "id", defaultValue = "0") long parentid) {
+        List<TreePojo> treePojoList = tbCompanyService.queryCompany(parentid);
+
+
+        return DawnResult.build(200,"ok",treePojoList);
+
     }
 
     // 根据公司名称模糊查询
