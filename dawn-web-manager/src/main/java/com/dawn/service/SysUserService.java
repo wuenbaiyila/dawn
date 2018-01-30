@@ -1,11 +1,11 @@
 package com.dawn.service;
 
-import java.util.List;
-
 import com.dawn.pojo.SysPermission;
 import com.dawn.pojo.SysUser;
 import com.dawn.util.DawnResult;
 import com.dawn.util.Result;
+
+import java.util.List;
 
 public interface SysUserService {
 	// 用户认证

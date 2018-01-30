@@ -7,7 +7,6 @@ import com.dawn.util.DawnResult;
 import com.dawn.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,30 +30,29 @@ public class SysUserController {
 	 * Description:
 	 * </p>
 	 * 
-	 * @param userPhone
+
 	 * @param password
-	 * @param model
-	 * @param session
 	 * @return
 	 */
-	@RequestMapping("/loginuser")
-	public String login(String userPhone, String password, Model model, HttpSession session) {
-		if (userPhone != null && password != null) {
+	@RequestMapping("/account/login")
+	@ResponseBody
+	public DawnResult login(String username,String password, HttpSession session) {
+
 			// 调用service方法
-			DawnResult result = userService.authenticat(userPhone, password);
+			DawnResult result = userService.authenticat(username, password);
 			// 返回的数据 400 的话,返回到error页面 用户提示信息
 			if (result.getStatus() == 400) {
-				model.addAttribute("message", result.getMsg());
-				return "error";
+
+				return result;
 			}
+			//获取activeUser
 			ActiveUser activeUser = (ActiveUser) result.getData();
 			// 保存到session中去.
 			session.setAttribute("activeUser", activeUser);
-			return "index";
+			return result;
 		}
-		return "login";
 
-	}
+
 
 	/**
 	 * 查询用户
