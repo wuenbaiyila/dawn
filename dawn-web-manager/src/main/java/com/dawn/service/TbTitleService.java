@@ -3,6 +3,7 @@ package com.dawn.service;
 import com.dawn.pojo.TbTitle;
 import com.dawn.pojo.TbTitleCustom;
 import com.dawn.util.DawnResult;
+import com.dawn.util.Response;
 import com.dawn.util.Result;
 
 import java.util.List;
@@ -33,8 +34,22 @@ public interface TbTitleService {
 	void updateTbtitle(long tbtitleId, String cause);
 
 	List<TbTitle> getTitleList(Long categoryId);
-	Result getTitleLists(Long categoryId, int page, int rows);
+
+	Result getTitleList(Long categoryId, int page, int rows);
 	// 根据题目ID查询题目
 	TbTitle queryByTitleId(Long id);
+
+	//从tb_title 表查找 hr提出的问题
+	List<TbTitle> selectHRquestions();
+
+	//最容易被面试官看穿的问题
+	Response seeThrough();
+
+	//查询前15的常见问题
+	Response selecttopfifteen();
+	//一周高频面试题
+	List<TbTitle> getTbTitleHF();
+
+
 
 }

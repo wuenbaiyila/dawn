@@ -1,11 +1,11 @@
 package com.dawn.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.dawn.pojo.TbTitle;
 import com.dawn.pojo.TbTitleExample;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 public interface TbTitleMapper {
 	int countByExample(TbTitleExample example);
@@ -37,4 +37,16 @@ public interface TbTitleMapper {
 	int updateByPrimaryKeyWithBLOBs(TbTitle record);
 
 	int updateByPrimaryKey(TbTitle record);
+
+	List<TbTitle> selectHRquestions();
+
+	@Select(" SELECT title,tbtitle_id, clicknum FROM tb_title ORDER BY tb_title.clicknum DESC LIMIT 15")
+	List<TbTitle> selecttopfifteen();
+	@Select("SELECT t.audit_status,t.category_id,t.cause,t.clicknum,t.created,t.tbtitle_id,t.title,t.updated,t.userid,t.user_type FROM tb_title t WHERE audit_status=2 ORDER BY clicknum DESC limit 0,15")
+	List<TbTitle> seeThrough();
+
+	List<TbTitle> getTbTitleHF(@Param("nowdate") String nowdate,@Param("olddate7") String olddate7);
+
+
+
 }

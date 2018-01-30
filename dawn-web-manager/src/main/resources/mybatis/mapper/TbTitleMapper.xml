@@ -349,4 +349,24 @@
       user_type = #{userType,jdbcType=INTEGER}
     where tbtitle_id = #{tbtitleId,jdbcType=BIGINT}
   </update>
+
+  <!--排序 HR20问-->
+  <select id="selectHRquestions" resultMap="BaseResultMap">
+    SELECT
+    t.`tbtitle_id`,t.`title`,t.`created`,
+    t.`updated`,t.`clicknum`,t.`category_id`,
+    t.`audit_status`,t.`userid`,t.`cause`,
+    t.`user_type`
+    FROM
+    tb_title t
+    WHERE
+    category_id = 67 ORDER BY clicknum DESC LIMIT 0,20
+  </select>
+
+
+  <select id="getTbTitleHF" resultType="com.dawn.pojo.TbTitle">
+    SELECT * FROM tb_title WHERE audit_status='2' AND updated BETWEEN #{olddate7} AND #{nowdate} order by clicknum desc
+  </select>
+
+
 </mapper>

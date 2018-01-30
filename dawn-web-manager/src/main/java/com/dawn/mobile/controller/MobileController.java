@@ -38,7 +38,7 @@ public class MobileController {
     @ResponseBody
     public Result getTitleList(@PathVariable Long categoryId, int page, int rows) {
 
-        return titleService.getTitleLists(categoryId, page, rows);
+        return titleService.getTitleList(categoryId, page, rows);
     }
 
     //查询java大数据目录：数据库，框架类型，java基础与Web，数据结构与算法，互联网技术等。

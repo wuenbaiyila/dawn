@@ -1,19 +1,23 @@
 package com.dawn.service.impl;
 
+import com.dawn.jedis.dao.JedisClient;
 import com.dawn.mapper.TbDescMapper;
 import com.dawn.mapper.TbTitleCustomMapper;
 import com.dawn.mapper.TbTitleMapper;
 import com.dawn.pojo.*;
 import com.dawn.pojo.TbTitleExample.Criteria;
 import com.dawn.service.TbTitleService;
-import com.dawn.util.DawnResult;
-import com.dawn.util.IDUtils;
-import com.dawn.util.Result;
+import com.dawn.util.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List; 
 
@@ -24,8 +28,11 @@ public class TbTitleServiceImpl implements TbTitleService {
 	@Autowired
 	private TbDescMapper descMapper;
 	@Autowired
-	private TbTitleCustomMapper customMapper; 
+	private TbTitleCustomMapper customMapper;
+	@Autowired
+	private JedisClient jedisClient;
 
+	private static  final Logger LOGGER = LoggerFactory.getLogger(TbTitleServiceImpl.class);
 	/**
 	 * 
 	 * <p>
@@ -41,7 +48,7 @@ public class TbTitleServiceImpl implements TbTitleService {
 	 //* @see TbTitleService#getTitleList(int, int)
 	 */
 	// 根据题目类型获取题目列表
-	public Result getTitleLists(Long categoryId, int page, int rows) {
+	public Result getTitleList(Long categoryId, int page, int rows) {
 		TbTitleExample example = new TbTitleExample();
 		Criteria criteria = example.createCriteria();
 		example.setOrderByClause("clicknum DESC");
@@ -228,5 +235,65 @@ public class TbTitleServiceImpl implements TbTitleService {
 	public TbTitle queryByTitleId(Long id) {
 		return titleMapper.selectByPrimaryKey(id);
 	}
+
+	//查找 排行模块 HR20问
+	public List<TbTitle> selectHRquestions() {
+		LOGGER.debug("tbtitleServiceImpl selectHRquestions方法开始");
+		String jsonData = jedisClient.get("TBTITLE_HR_QUESTIONS");
+		if(StringUtils.isNotBlank(jsonData)){
+			List<TbTitle> tbTitles = JsonUtils.jsonToList(jsonData, TbTitle.class);
+			return  tbTitles;
+		}
+		//添加缓存逻辑 查询结果存入redis 并设置有效期24小时
+		List<TbTitle> tbTitles = titleMapper.selectHRquestions();
+		jedisClient.set("TBTITLE_HR_QUESTIONS", JsonUtils.objectToJson(tbTitles));
+		jedisClient.expire("TBTITLE_HR_QUESTIONS",86400);
+		return  tbTitles;
+	}
+
+	//最容易被面试官看穿的问题
+	public Response seeThrough() {
+		List<TbTitle> list = titleMapper.seeThrough();
+		if (list!=null && list.size()>0){
+			return Response.build().setData(list);
+		}else {
+			return null;
+		}
+	}
+
+	//查询前15的常见问题
+	public Response selecttopfifteen() {
+		List<TbTitle> list =titleMapper.selecttopfifteen();
+		if (list!=null && list.size()>0){
+			return Response.build().setData(list);
+		}
+		return null;
+	}
+
+	//路遥酒后著
+	public List<TbTitle> getTbTitleHF() {
+		//得到七天前的时间
+		//格式化日期的对象(转化成习惯的时间格式)
+		SimpleDateFormat sdFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		//静态方法getInstance()使用默认时区和语言环境获得一个日历。
+		Calendar calendar= Calendar.getInstance();
+		String nowdate = sdFormat.format(calendar.getTime());
+		//输出当前系统时间;
+		//System.out.println("当前系统时间: "+sdFormat.format(calendar.getTime()));
+
+		//add()增加日期，以天为单位（Calendar封装了很多静态的操作时间的单位）
+		//增加10天，负数则为减少天数
+		calendar.add(Calendar.DATE,-7);
+
+		//输出增加10天后的时间;
+		//System.out.println("减少7天后的时间: "+sdFormat.format(calendar.getTime()));
+		String olddate7 = sdFormat.format(calendar.getTime());
+		return titleMapper.getTbTitleHF(nowdate,olddate7);
+
+	}
+
+
+
 
 }

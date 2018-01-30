@@ -71,5 +71,7 @@
     </bean>
     <!-- 注解事务 -->
     <tx:annotation-driven transaction-manager="transactionManager" />
+    <!--引入redis配置文件-->
+    <import resource="classpath:jedis-client.xml"></import>
 
 </beans>
