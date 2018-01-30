@@ -32,8 +32,8 @@ public interface TbTitleService {
 	// 保存未通过原因
 	void updateTbtitle(long tbtitleId, String cause);
 
-	Result getTitleList(Long categoryId, int page, int rows);
-
+	List<TbTitle> getTitleList(Long categoryId);
+	Result getTitleLists(Long categoryId, int page, int rows);
 	// 根据题目ID查询题目
 	TbTitle queryByTitleId(Long id);
 

@@ -40,9 +40,8 @@ public class TbTitleServiceImpl implements TbTitleService {
 	 * @return
 	 //* @see TbTitleService#getTitleList(int, int)
 	 */
-
 	// 根据题目类型获取题目列表
-	public Result getTitleList(Long categoryId, int page, int rows) {
+	public Result getTitleLists(Long categoryId, int page, int rows) {
 		TbTitleExample example = new TbTitleExample();
 		Criteria criteria = example.createCriteria();
 		example.setOrderByClause("clicknum DESC");
@@ -55,6 +54,21 @@ public class TbTitleServiceImpl implements TbTitleService {
 		result.setRows(list);
 		result.setTotal(pageInfo.getTotal());
 		return result;
+	}
+
+// 根据题目类型获取题目列表
+	public List<TbTitle> getTitleList(Long categoryId) {
+		TbTitleExample example = new TbTitleExample();
+		Criteria criteria = example.createCriteria();
+		example.setOrderByClause("clicknum DESC");
+		criteria.andCategoryIdEqualTo(categoryId);
+		criteria.andAuditStatusEqualTo("2");
+		List<TbTitle> list = titleMapper.selectByExample(example);
+//		Result result = new Result();
+//		result.setRows(list);
+//		result.setTotal(pageInfo.getTotal());
+		System.out.println(list.get(0).getCreated()+""+list.get(0).getUpdated() );
+		return list;
 	}
 
 
