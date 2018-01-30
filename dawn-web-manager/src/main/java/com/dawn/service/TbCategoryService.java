@@ -1,14 +1,16 @@
 package com.dawn.service;
 
-import java.util.List;
-
 import com.dawn.pojo.TbCategory;
+import com.dawn.util.DawnResult;
 import com.dawn.util.TreePojo;
+
+import java.util.List;
 
 public interface TbCategoryService {
 	// 查询知识点
 	public List<TreePojo> queryCategory(long parentid);
-
+	//移动端查询知识点
+	public DawnResult getCategory(long parentid);
 	// 查询是否有子节点
 	public List<TbCategory> getChildList(long parentid);
 

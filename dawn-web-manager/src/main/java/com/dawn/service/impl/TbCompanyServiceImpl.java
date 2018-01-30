@@ -5,6 +5,7 @@ import com.dawn.pojo.TbCompany;
 import com.dawn.pojo.TbCompanyExample;
 import com.dawn.pojo.TbCompanyExample.Criteria;
 import com.dawn.service.TbCompanyService;
+import com.dawn.util.DawnResult;
 import com.dawn.util.Result;
 import com.dawn.util.TreePojo;
 import com.github.pagehelper.PageHelper;
@@ -46,6 +47,18 @@ public class TbCompanyServiceImpl implements TbCompanyService {
 			result.add(tree);
 		}
 		return result;
+	}
+
+	public DawnResult getCompany(long parentid) {
+		TbCompanyExample example = new TbCompanyExample();
+		Criteria createCriteria = example.createCriteria();
+		createCriteria.andParentidEqualTo(parentid);
+		List<TbCompany> list = tbCompanyMapper.selectByExample(example);
+		if(list!=null && list.size()>0){
+			return DawnResult.build(200,null,list);
+		}else{
+			return DawnResult.build(400,"正在努力加载中");
+		}
 	}
 
 

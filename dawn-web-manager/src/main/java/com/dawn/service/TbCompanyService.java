@@ -1,15 +1,17 @@
 package com.dawn.service;
 
-import java.util.List;
-
 import com.dawn.pojo.TbCompany;
+import com.dawn.util.DawnResult;
 import com.dawn.util.Result;
 import com.dawn.util.TreePojo;
+
+import java.util.List;
 
 public interface TbCompanyService {
 	// 查询公司
 	public List<TreePojo> queryCompany(long parentid);
-
+	//移动端查询公司
+	public DawnResult getCompany(long parentid);
 	// 查询子节点
 	public List<TbCompany> getChildList(long parentid);
 

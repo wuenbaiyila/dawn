@@ -5,6 +5,7 @@ import com.dawn.pojo.TbCategory;
 import com.dawn.pojo.TbCategoryExample;
 import com.dawn.pojo.TbCategoryExample.Criteria;
 import com.dawn.service.TbCategoryService;
+import com.dawn.util.DawnResult;
 import com.dawn.util.TreePojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,19 @@ public class TbCategoryServiceImpl implements TbCategoryService {
 			result.add(tree);
 		}
 		return result;
+	}
+	//因为移动端需要返回DawnResult封装的数据,所以重新创建一个方法用于封装数据,
+	public DawnResult getCategory(long parentid) {
+		TbCategoryExample example = new TbCategoryExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andParentidEqualTo(parentid);
+		List<TbCategory> list = tbCategoryMapper.selectByExample(example);
+		if(list!=null && list.size()>0){
+			return DawnResult.build(200,null,list);
+		}else{
+			return DawnResult.build(400,"加载失败,请稍后重试");
+		}
+
 	}
 
 	// 查询子节点
