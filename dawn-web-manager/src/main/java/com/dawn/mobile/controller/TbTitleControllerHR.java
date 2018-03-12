@@ -30,7 +30,8 @@ public class TbTitleControllerHR {
 
     //这里做了改变
    //新建了一个分支 在这个分支上开发 写代码
-
+            //用于merge操作 要出现在白乙拉分支 并merge之后出现在  主分支上
+            //无论是哪个分支 在切换之前先commit push掉
     //本周高频面试问题
     @ResponseBody
     @RequestMapping("/getHFlist")
